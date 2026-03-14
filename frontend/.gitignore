@@ -1,0 +1,6 @@
+.next/
+out/
+*.pem
+node_modules/
+.env
+.env.local
