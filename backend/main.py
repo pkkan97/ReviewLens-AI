@@ -248,7 +248,7 @@ Please provide a well-structured, professional analysis based only on the review
 - Clear sections with headers
 - Bullet points for key findings
 - Specific examples from reviews
-- Actionable insights
+- Should user consider this product/service based on the reviews?
 
 Keep the response concise but informative."""
 
