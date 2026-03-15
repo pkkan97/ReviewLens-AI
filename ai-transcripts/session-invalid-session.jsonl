@@ -1,1 +1,0 @@
-{"event": "chat", "input": {"message": "What is the weather?", "session_id": "invalid-session"}, "output": {"response": "I can only answer questions about the ingested reviews. Please ask something like 'What are the main complaints?' or 'What's the overall sentiment?'", "is_scope_compliant": false, "confidence": 0.0}, "timestamp": "2026-03-14T12:15:23.328221"}
