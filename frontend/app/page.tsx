@@ -47,11 +47,12 @@ export default function Home() {
   useEffect(() => {
     const initSession = async () => {
       try {
-        const response = await axios.post(`${apiUrl}/api/session`);
+        const response = await axios.post(`${apiUrl}/api/session`, {}, { timeout: 5000 });
         setSessionId(response.data.session_id);
         console.log("Session created:", response.data.session_id);
       } catch (err) {
         console.error("Failed to create session:", err);
+        setSessionId("pending");
       }
     };
     initSession();
