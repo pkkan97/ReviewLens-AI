@@ -237,20 +237,14 @@ async def chat(request: ChatMessage):
                     ])
                     
                     # Create prompt for Gemini with better formatting instructions
-                    gemini_prompt = f"""You are an expert AI assistant analyzing customer reviews for a product/service from {platform}.
+                    gemini_prompt = f"""Analyze these {platform} reviews and provide concise key insights. Answer: Should the user consider this product/service?
 
-Here are the reviews to analyze:
+Reviews:
 {reviews_text}
 
 User question: {request.message}
 
-Please provide a well-structured, professional analysis based only on the reviews provided. Format your response with:
-- Clear sections with headers
-- Bullet points for key findings
-- Specific examples from reviews
-- Should user consider this product/service based on the reviews?
-
-Keep the response concise but informative."""
+Response format: Key insights in bullet points, then yes/no recommendation with brief reasoning."""
 
                     response_text = None
                     
