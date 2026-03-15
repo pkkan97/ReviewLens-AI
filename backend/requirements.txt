@@ -1,6 +1,7 @@
 fastapi==0.104.1
 uvicorn==0.24.0
 pydantic==2.5.0
+pydantic-core==2.14.6
 python-multipart==0.0.6
 anthropic>=0.7.0
 openai>=1.0.0

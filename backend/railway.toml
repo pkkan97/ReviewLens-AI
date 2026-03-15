@@ -1,0 +1,11 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "python main.py"
+healthcheckPath = "/api/session"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+
+[build.env]
+PYTHON_VERSION = "3.9"
