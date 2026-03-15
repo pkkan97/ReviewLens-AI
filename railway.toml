@@ -1,0 +1,20 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "cd backend && python main.py"
+healthcheckPath = "/api/session"
+healthcheckTimeout = 300
+restartPolicyType = "ON_FAILURE"
+
+[build.env]
+NODE_VERSION = "18"
+PYTHON_VERSION = "3.9"
+
+[services.backend]
+startCommand = "python main.py"
+sourceDir = "backend"
+
+[services.frontend]
+startCommand = "npm run build && npm start"
+sourceDir = "frontend"
