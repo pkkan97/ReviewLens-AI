@@ -31,7 +31,6 @@ pip install -r requirements.txt
 python main.py
 ```
 
-Backend runs on `http://localhost:8000`
 
 ### 2. Frontend Setup (in another terminal)
 
@@ -41,11 +40,11 @@ npm install
 npm run dev
 ```
 
-Frontend runs on `http://localhost:3000`
+Frontend runs on `https://reviewlens-ai-frontend-production.up.railway.app/`
 
 ### 3. Open the App
 
-Navigate to `http://localhost:3000`
+Navigate to `https://reviewlens-ai-frontend-production.up.railway.app/`
 
 ## 📖 How to Use
 
@@ -103,14 +102,6 @@ ReviewLens-AI/
 5. User chats; backend logs each message
 6. Frontend fetches and displays logs
 
-### Logging
-
-Every action is appended to `/ai-transcripts/session-<session_id>.jsonl`
-
-```json
-{"event": "scrape", "input": {"url": "..."}, "output": {...}, "timestamp": "2026-03-14T..."}
-{"event": "chat", "input": {"message": "..."}, "output": {...}, "timestamp": "2026-03-14T..."}
-```
 
 ## 🔐 Scope Guards
 
@@ -136,13 +127,13 @@ ANTHROPIC_API_KEY=sk-ant-...
 
 ```bash
 # Health check
-curl http://localhost:8000/health
+curl https://reviewlens-ai-frontend-production.up.railway.app/health
 
 # Create session
-curl -X POST http://localhost:8000/api/session
+curl -X POST https://reviewlens-ai-frontend-production.up.railway.app/api/session
 
 # Scrape (replace session_id)
-curl -X POST http://localhost:8000/api/scrape \
+curl -X POST https://reviewlens-ai-frontend-production.up.railway.app/api/scrape \
   -F 'url=https://amazon.com/dp/...' \
   -F 'session_id=<session_id>'
 
