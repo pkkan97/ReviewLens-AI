@@ -308,7 +308,7 @@ export default function Home() {
               <div className="bg-yellow-50 p-4 rounded-lg">
                 <p className="text-gray-600 text-sm">Average Rating</p>
                 <p className="text-3xl font-bold text-yellow-600">
-                  {summary.average_rating.toFixed(1)} ⭐
+                  {summary.average_rating.toFixed(1)}/5
                 </p>
               </div>
               <div className="bg-green-50 p-4 rounded-lg">
@@ -345,7 +345,7 @@ export default function Home() {
                     >
                       <div className="flex items-center justify-between mb-3">
                         <span className="font-semibold text-gray-900 text-lg">
-                          {"⭐".repeat(review.rating)}
+                          Rating: {review.rating}/5
                         </span>
                         <span className="text-sm text-gray-500 font-medium">
                           {review.date}
