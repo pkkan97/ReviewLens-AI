@@ -293,23 +293,38 @@ class ReviewScraper:
             # Process up to 15 reviews (reduced from 25 to avoid timeout)
             for i, section in enumerate(unique_reviews[:15]):
                 try:
-                    # Extract rating - be more aggressive
+                    # Extract rating - look for star-rating class first
                     rating = 5  # Default to 5 stars
 
-                    # Look for any text that contains numbers 1-5 followed by star/rating
-                    section_text = section.get_text().strip()
-                    import re
-
-                    # Pattern: number followed by "star" or in star symbols
-                    star_pattern = r'(\d+)\s*star'
-                    match = re.search(star_pattern, section_text, re.I)
-                    if match:
-                        rating = int(match.group(1))
+                    # Look for star-rating-X class (e.g., star-rating-4)
+                    star_rating_elem = section.find(attrs={"class": re.compile(r"star-rating-\d+")})
+                    if star_rating_elem:
+                        # Extract the number from class like "star-rating-4"
+                        class_str = ' '.join(star_rating_elem.get('class', []))
+                        match = re.search(r'star-rating-(\d+)', class_str)
+                        if match:
+                            rating = int(match.group(1))
+                        else:
+                            # Alternative: check the class name directly
+                            for cls in star_rating_elem.get('class', []):
+                                if cls.startswith('star-rating-'):
+                                    try:
+                                        rating = int(cls.split('-')[-1])
+                                        break
+                                    except ValueError:
+                                        continue
                     else:
-                        # Look for star symbols
-                        star_count = section_text.count('⭐')
-                        if star_count > 0:
-                            rating = min(star_count, 5)
+                        # Fallback to text patterns if no star-rating class
+                        section_text = section.get_text().strip()
+                        star_pattern = r'(\d+)\s*star'
+                        match = re.search(star_pattern, section_text, re.I)
+                        if match:
+                            rating = int(match.group(1))
+                        else:
+                            # Look for star symbols
+                            star_count = section_text.count('⭐')
+                            if star_count > 0:
+                                rating = min(star_count, 5)
 
                     # Extract review text - be more aggressive
                     text = section_text
