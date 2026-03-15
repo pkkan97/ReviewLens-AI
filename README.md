@@ -150,24 +150,6 @@ curl -X POST http://localhost:8000/api/scrape \
 cat ai-transcripts/session-<session_id>.jsonl | jq
 ```
 
-## 🎬 Demo Checklist for Loom
-
-1. ✅ Ingest a product (URL or CSV)
-2. ✅ Show scraping summary
-3. ✅ Ask a review question via chat
-4. ✅ Ask an out-of-scope question (see it decline)
-5. ✅ Click "📋 Logs" to show session transcript
-
-## 📝 AI Session Transcripts
-
-Export your AI tool conversations (Claude Code, Cursor, Copilot) and save as `.txt`/`.md` files in `/ai-transcripts/`:
-```
-ai-transcripts/
-├── ai-session-copilot-2026-03-14.txt
-├── ai-session-cursor-2026-03-14.txt
-└── session-<session-id>.jsonl  (auto-generated app logs)
-```
-
 ## 🚢 Deployment
 
 **Frontend (Vercel)**:
