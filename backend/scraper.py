@@ -228,6 +228,48 @@ class ReviewScraper:
         return reviews
 
     @staticmethod
+    def _estimate_rating_from_sentiment(text: str) -> int:
+        """Estimate rating from review text sentiment (1-5 scale)."""
+        text_lower = text.lower()
+        
+        # Negative indicators
+        negative_words = [
+            'terrible', 'horrible', 'awful', 'worst', 'bad', 'poor', 'disappointing',
+            'disappointed', 'useless', 'waste', 'pathetic', 'horrendous', 'disgusting',
+            'garbage', 'trash', 'broken', 'doesn\'t work', 'doesn\'t work', 'scam',
+            'fraud', 'rip off', 'ripoff', 'avoid', 'regret', 'refund', 'refunded'
+        ]
+        
+        # Positive indicators
+        positive_words = [
+            'excellent', 'amazing', 'great', 'fantastic', 'wonderful', 'outstanding',
+            'perfect', 'love', 'best', 'awesome', 'brilliant', 'superb', 'exceptional',
+            'impressed', 'impressed', 'highly recommend', 'recommend', 'satisfied',
+            'happy', 'delighted', 'thrilled', 'great quality', 'works great'
+        ]
+        
+        # Count sentiment words
+        negative_count = sum(1 for word in negative_words if word in text_lower)
+        positive_count = sum(1 for word in positive_words if word in text_lower)
+        
+        # Calculate sentiment score
+        if negative_count > positive_count:
+            # More negative than positive - rate 1-2
+            if negative_count >= 3:
+                return 1
+            else:
+                return 2
+        elif positive_count > negative_count:
+            # More positive than negative - rate 4-5
+            if positive_count >= 3:
+                return 5
+            else:
+                return 4
+        else:
+            # Neutral or mixed - default to 3
+            return 3
+
+    @staticmethod
     def _scrape_trustpilot(soup) -> List[Dict]:
         """Scrape Trustpilot reviews (more reliable than other platforms)."""
         reviews = []
@@ -294,7 +336,7 @@ class ReviewScraper:
             for i, section in enumerate(unique_reviews[:15]):
                 try:
                     # Extract rating - look for star-rating class first
-                    rating = 5  # Default to 5 stars
+                    rating = 0  # Default to 0 (unknown) - will use sentiment analysis as fallback
 
                     section_text = section.get_text().strip()
 
@@ -324,7 +366,7 @@ class ReviewScraper:
                                 rating = int(match.group(1))
 
                         # Method 3: Look for "Rated X out of 5" in text
-                        if rating == 5:  # Only if not found yet
+                        if rating == 0:  # Only if not found yet
                             match = re.search(r'Rated (\d+) out of 5', section_text, re.I)
                             if match:
                                 rating = int(match.group(1))
@@ -367,6 +409,10 @@ class ReviewScraper:
                     # Skip if text is too short or too long
                     if len(text) < 20 or len(text) > 800:
                         continue
+
+                    # If rating extraction failed (rating == 0), use sentiment analysis
+                    if rating == 0:
+                        rating = ReviewScraper._estimate_rating_from_sentiment(text)
 
                     reviews.append({
                         "rating": max(1, min(5, rating)),
